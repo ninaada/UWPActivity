@@ -11,7 +11,7 @@ namespace UWPActivity.UWP
 {
     public class UWPIndicatorRenderer : ViewRenderer<UWPIndicator, ProgressRing>
     {
-        ProgressRing _progressRing;
+        ProgressRing ring;
         protected override void OnElementChanged(ElementChangedEventArgs<UWPIndicator> e)
         {
             try
@@ -21,25 +21,16 @@ namespace UWPActivity.UWP
                 if (Control != null)
                     return;
 
-                _progressRing = new ProgressRing();
+                ring = new ProgressRing();
 
                 if (e.NewElement != null)
                 {
-                    _progressRing.IsActive = Element.IsRunning;
-                    _progressRing.Visibility = Element.IsRunning ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
+                    ring.IsActive = Element.IsRunning;
+                    ring.Visibility = Element.IsRunning ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
                     var xfColor = Element.Color;
-                    _progressRing.Foreground = xfColor.ToUwpSolidColorBrush();
-                    SetNativeControl(_progressRing);
+                    ring.Foreground = xfColor.ToUwpSolidColorBrush();
+                    SetNativeControl(ring);
                 }
-
-                //if (Control == null)
-                //{
-                //    _progressRing = new ProgressRing();
-                //    _progressRing.IsActive = true;
-                //    _progressRing.Visibility = Visibility.Visible;
-                //    _progressRing.IsEnabled = true;
-                //    SetNativeControl(_progressRing);
-                //}
             }
             catch (Exception ex)
             {
@@ -55,24 +46,24 @@ namespace UWPActivity.UWP
 
                 if (e.PropertyName == nameof(ActivityIndicator.Color))
                 {
-                    _progressRing.Foreground = Element.Color.ToUwpSolidColorBrush();
+                    ring.Foreground = Element.Color.ToUwpSolidColorBrush();
                 }
                 if (e.PropertyName == nameof(ActivityIndicator.IsRunning))
                 {
-                    _progressRing.IsActive = Element.IsRunning;
-                    _progressRing.Visibility = Element.IsRunning ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
+                    ring.IsActive = Element.IsRunning;
+                    ring.Visibility = Element.IsRunning ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
                 }
                 if (e.PropertyName == nameof(ActivityIndicator.WidthRequest))
                 {
-                    _progressRing.Width = Element.WidthRequest > 0 ? Element.WidthRequest : 20;
+                    ring.Width = Element.WidthRequest > 0 ? Element.WidthRequest : 20;
                     UpdateNativeControl();
                 }
                 if (e.PropertyName == nameof(ActivityIndicator.HeightRequest))
                 {
-                    _progressRing.Height = Element.HeightRequest > 0 ? Element.HeightRequest : 20;
+                    ring.Height = Element.HeightRequest > 0 ? Element.HeightRequest : 20;
                     UpdateNativeControl();
                 }
-                if (_progressRing.Height != _progressRing.Width)
+                if (ring.Height != ring.Width)
                 {
                     double min = Math.Min(Element.HeightRequest, Element.WidthRequest);
                     if (min <= 0)
@@ -81,8 +72,8 @@ namespace UWPActivity.UWP
                     }
                     if (min > 0)
                     {
-                        _progressRing.Height = _progressRing.Width = min;
-                        _progressRing.MaxHeight = _progressRing.MaxWidth = min;
+                        ring.Height = ring.Width = min;
+                        ring.MaxHeight = ring.MaxWidth = min;
                         UpdateNativeControl();
                     }
                 }
